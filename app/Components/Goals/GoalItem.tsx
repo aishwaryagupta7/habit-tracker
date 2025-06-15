@@ -1,4 +1,4 @@
-import FormButton from "./FormButton";
+import FormButton from "../FormButton";
 
 const GoalItem = ({ goal, onComplete, onEdit, onDelete }: GoalItemProps) => {
     return (

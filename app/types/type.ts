@@ -1,10 +1,8 @@
 interface DateTimeSelectorProps  {
     value: string; // format: "YYYY-MM-DD HH:mm"
     onChange: (value: string) => void;
+    disabled?: boolean;
 };
-
-type Weekday = "Mon" | "Tues" | "Wed" | "Thurs" | "Fri" | "Sat" | "Sun";
-type AvailableDay = 'Mon' | 'Tues' | 'Wed';
 
 
 interface FormInputProps  {
@@ -23,6 +21,7 @@ interface FormInputProps  {
 interface Goal {
     id: string;
     title: string;
+    userId: string;
     description: string;
     deadline: string;
     completed: boolean;
@@ -43,18 +42,24 @@ interface GoalListProps {
     onDelete: (id: string) => void;
 }
 
+interface GoalsManagerProps {
+    selectedDay: string;
+}
+
+interface GoalFormProps {
+      selectedDay: string;
+      onGoalCreate: (goal: Omit<Goal, 'id'>) => void;
+      onGoalUpdate: (goalId: string, updatedGoal: Omit<Goal, 'id'>) => void;
+      editingGoal: Goal | null;
+      onEditCancel: () => void;
+}
+
 interface DayBoxProps  {
     day: number;
     completed: boolean;
     highlighted?: boolean;
 };
 
-type CheckInEntry = {
-    date: string; // e.g. "2025-05-06"
-    water: number;
-    sleep: number;
-    screenTime: number;
-};
 
 interface StatProps {
     type: string;
@@ -67,3 +72,23 @@ interface StreakBubbleProps {
     label: string;
     bgColor: string;
 };
+
+interface CheckInEntry {
+  date: string;
+  sleep: number;
+  water: number;
+  screenTime: number;
+}
+ interface DayStats {
+  sleep: number;
+  water: number;
+  screenTime: number;
+}
+
+interface DayData {
+  stats: DayStats;
+  checkInHistory: CheckInEntry[];
+  userId?: string;
+}
+
+

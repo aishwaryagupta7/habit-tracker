@@ -1,16 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import FormInput from "./FormInput";
-import FormButton from "./FormButton";
-import DateTimeSelector from "./DateTimeSelector";
-
-interface GoalFormProps {
-  selectedDay: AvailableDay;
-  onGoalCreate: (goal: Omit<Goal, 'id'>) => void;
-  onGoalUpdate: (goalId: string, updatedGoal: Omit<Goal, 'id'>) => void;
-  editingGoal: Goal | null;
-  onEditCancel: () => void;
-}
+import FormInput from "../FormInput";
+import FormButton from "../FormButton";
+import DateTimeSelector from "../DateTimeSelector";
 
 const GoalsForm = ({ 
   selectedDay, 
@@ -19,18 +11,23 @@ const GoalsForm = ({
   editingGoal, 
   onEditCancel 
 }: GoalFormProps) => {
-  // Form states
+
   const [formData, setFormData] = useState({
     goalTitle: editingGoal?.title || '',
     goalDescription: editingGoal?.description || '',
     deadline: editingGoal?.deadline || '',
   });
 
-  // Constants
-  const currentDay = 'Wed';
+
+  const getCurrentDay = () => {
+    const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
+    const today = new Date();
+    return days[today.getDay()];
+  };
+
+  const currentDay = getCurrentDay();
   const isGoalFormDisabled = selectedDay !== currentDay;
 
-  // Update form when editing goal changes
   useEffect(() => {
     if (editingGoal) {
       setFormData({
@@ -47,7 +44,6 @@ const GoalsForm = ({
     }
   }, [editingGoal]);
 
-  // Handler functions
   const handleCreateOrUpdateGoal = () => {
     if (!formData.goalTitle || !formData.deadline) return;
 
@@ -64,7 +60,6 @@ const GoalsForm = ({
       onGoalCreate(goalData);
     }
 
-    // Reset the form
     setFormData({ goalTitle: "", goalDescription: "", deadline: "" });
   };
 
@@ -91,6 +86,14 @@ const GoalsForm = ({
   return (
     <div className="bg-[#FDF5FF]/40 backdrop-blur-lg rounded-xl p-4">
       <h3 className="font-semibold text-lg mb-2 text-black">Set Your Goals</h3>
+      
+      {/* Show message when trying to create goals for non-current days */}
+      {isGoalFormDisabled && (
+        <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 p-1 text-xs mb-2">
+          You can only create or edit goals for today ({currentDay}). Select today to manage your goals.
+        </div>
+      )}
+      
       <FormInput  
         label="Title" 
         name="goalTitle" 
@@ -109,7 +112,11 @@ const GoalsForm = ({
         disabled={isGoalFormDisabled} 
       />
       <div className='flex items-center justify-between'>
-        <DateTimeSelector value={formData.deadline} onChange={handleDeadlineChange} />
+        <DateTimeSelector 
+          value={formData.deadline} 
+          onChange={handleDeadlineChange}
+          disabled={isGoalFormDisabled}
+        />
         <div className="flex gap-2">
           {editingGoal && (
             <FormButton  
@@ -122,7 +129,7 @@ const GoalsForm = ({
             label={editingGoal ? "Update Goal" : "Create Goal"} 
             onClick={handleCreateOrUpdateGoal} 
             className={`bg-[#83A2DB] mt-6 cursor-pointer text-black ${isGoalFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`} 
-            disabled={isGoalFormDisabled} 
+            disabled={isGoalFormDisabled || !formData.goalTitle || !formData.deadline} 
           />
         </div>
       </div>
