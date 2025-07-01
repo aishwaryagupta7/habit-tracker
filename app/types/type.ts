@@ -1,11 +1,11 @@
-interface DateTimeSelectorProps  {
+interface DateTimeSelectorProps {
     value: string; // format: "YYYY-MM-DD HH:mm"
     onChange: (value: string) => void;
     disabled?: boolean;
 };
 
 
-interface FormInputProps  {
+interface FormInputProps {
     label: string;
     name: string;
     placeholder?: string;
@@ -47,14 +47,15 @@ interface GoalsManagerProps {
 }
 
 interface GoalFormProps {
-      selectedDay: string;
-      onGoalCreate: (goal: Omit<Goal, 'id'>) => void;
-      onGoalUpdate: (goalId: string, updatedGoal: Omit<Goal, 'id'>) => void;
-      editingGoal: Goal | null;
-      onEditCancel: () => void;
+    selectedDay: string;
+    onGoalCreate: (goal: Omit<Goal, 'id'>) => void;
+    onGoalUpdate: (goalId: string, updatedGoal: Omit<Goal, 'id'>) => void;
+    editingGoal: Goal | null;
+    onEditCancel: () => void;
+    userId: string;
 }
 
-interface DayBoxProps  {
+interface DayBoxProps {
     day: number;
     completed: boolean;
     highlighted?: boolean;
@@ -74,21 +75,21 @@ interface StreakBubbleProps {
 };
 
 interface CheckInEntry {
-  date: string;
-  sleep: number;
-  water: number;
-  screenTime: number;
+    date: string;
+    sleep: number;
+    water: number;
+    screenTime: number;
 }
- interface DayStats {
-  sleep: number;
-  water: number;
-  screenTime: number;
+interface DayStats {
+    sleep: number;
+    water: number;
+    screenTime: number;
 }
 
 interface DayData {
-  stats: DayStats;
-  checkInHistory: CheckInEntry[];
-  userId?: string;
+    stats: DayStats;
+    checkInHistory: CheckInEntry[];
+    userId?: string;
 }
 
 

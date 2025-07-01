@@ -4,12 +4,14 @@ import FormInput from "../FormInput";
 import FormButton from "../FormButton";
 import DateTimeSelector from "../DateTimeSelector";
 
-const GoalsForm = ({ 
-  selectedDay, 
-  onGoalCreate, 
-  onGoalUpdate, 
-  editingGoal, 
-  onEditCancel 
+
+const GoalsForm = ({
+  selectedDay,
+  onGoalCreate,
+  onGoalUpdate,
+  editingGoal,
+  onEditCancel,
+  userId
 }: GoalFormProps) => {
 
   const [formData, setFormData] = useState({
@@ -52,6 +54,7 @@ const GoalsForm = ({
       description: formData.goalDescription,
       deadline: formData.deadline,
       completed: false,
+      userId: userId,
     };
 
     if (editingGoal) {
@@ -86,50 +89,50 @@ const GoalsForm = ({
   return (
     <div className="bg-[#FDF5FF]/40 backdrop-blur-lg rounded-xl p-4">
       <h3 className="font-semibold text-lg mb-2 text-black">Set Your Goals</h3>
-      
+
       {/* Show message when trying to create goals for non-current days */}
       {isGoalFormDisabled && (
         <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 p-1 text-xs mb-2">
           You can only create or edit goals for today ({currentDay}). Select today to manage your goals.
         </div>
       )}
-      
-      <FormInput  
-        label="Title" 
-        name="goalTitle" 
-        placeholder="Enter your goal title" 
-        value={formData.goalTitle} 
-        onChange={handleInputChange} 
+
+      <FormInput
+        label="Title"
+        name="goalTitle"
+        placeholder="Enter your goal title"
+        value={formData.goalTitle}
+        onChange={handleInputChange}
         disabled={isGoalFormDisabled}
       />
-      <FormInput  
-        label="Description" 
-        name="goalDescription" 
-        placeholder="Enter your goal description" 
-        value={formData.goalDescription} 
-        onChange={handleInputChange} 
-        textarea={true} 
-        disabled={isGoalFormDisabled} 
+      <FormInput
+        label="Description"
+        name="goalDescription"
+        placeholder="Enter your goal description"
+        value={formData.goalDescription}
+        onChange={handleInputChange}
+        textarea={true}
+        disabled={isGoalFormDisabled}
       />
       <div className='flex items-center justify-between'>
-        <DateTimeSelector 
-          value={formData.deadline} 
+        <DateTimeSelector
+          value={formData.deadline}
           onChange={handleDeadlineChange}
           disabled={isGoalFormDisabled}
         />
         <div className="flex gap-2">
           {editingGoal && (
-            <FormButton  
-              label="Cancel" 
-              onClick={handleCancel} 
-              className="bg-gray-200 text-black mt-6 cursor-pointer" 
+            <FormButton
+              label="Cancel"
+              onClick={handleCancel}
+              className="bg-gray-200 text-black mt-6 cursor-pointer"
             />
           )}
-          <FormButton  
-            label={editingGoal ? "Update Goal" : "Create Goal"} 
-            onClick={handleCreateOrUpdateGoal} 
-            className={`bg-[#83A2DB] mt-6 cursor-pointer text-black ${isGoalFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`} 
-            disabled={isGoalFormDisabled || !formData.goalTitle || !formData.deadline} 
+          <FormButton
+            label={editingGoal ? "Update Goal" : "Create Goal"}
+            onClick={handleCreateOrUpdateGoal}
+            className={`bg-[#83A2DB] mt-6 cursor-pointer text-black ${isGoalFormDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isGoalFormDisabled || !formData.goalTitle || !formData.deadline}
           />
         </div>
       </div>

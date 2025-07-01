@@ -28,7 +28,7 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
 
     setLoading(true);
     setError(null);
-    setEditingGoal(null); 
+    setEditingGoal(null);
 
     // Subscribe to real-time updates with user ID
     const unsubscribe = subscribeToGoals(selectedDay, user.uid, (updatedGoals) => {
@@ -93,7 +93,7 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
 
     try {
       setError(null);
-      
+
       // Find the goal to complete
       const goalToComplete = goals.find(goal => goal.id === goalId);
       if (!goalToComplete) {
@@ -101,8 +101,8 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
       }
       await updateGoal(goalId, {
         ...goalToComplete,
-        completed: !goalToComplete.completed, 
-        day: goalToComplete.day 
+        completed: !goalToComplete.completed,
+        day: goalToComplete.day
       }, user.uid); // Pass user ID
     } catch (error) {
       console.error("Failed to complete goal:", error);
@@ -187,14 +187,14 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
     GoalsList: () => (
       <div className="bg-[#FDF5FF]/40 backdrop-blur-lg rounded-xl p-4 flex flex-col">
         <h3 className="font-semibold text-lg mb-2 text-black">Your Goals</h3>
-        
+
         {/* Error message */}
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded mb-2 text-sm">
             {error}
           </div>
         )}
-        
+
         <div className='flex-1 overflow-y-auto min-h-[22vh] max-h-[22vh] flex flex-col gap-3 custom-scrollbar pr-2'>
           {loading ? (
             <div className="flex items-center justify-center text-center">
@@ -206,18 +206,18 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
                 {selectedDay === (() => {
                   const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
                   return days[new Date().getDay()];
-                })() 
-                  ? "No goals for today. Create your first goal!" 
+                })()
+                  ? "No goals for today. Create your first goal!"
                   : `No goals for ${selectedDay}. Switch to today to create goals.`
                 }
               </div>
             </div>
           ) : (
-            <GoalList 
-              goals={goals} 
-              onComplete={handleCompleteGoal}  
-              onEdit={handleEditGoal} 
-              onDelete={handleDeleteGoal} 
+            <GoalList
+              goals={goals}
+              onComplete={handleCompleteGoal}
+              onEdit={handleEditGoal}
+              onDelete={handleDeleteGoal}
             />
           )}
         </div>
@@ -231,6 +231,7 @@ const GoalsManager = ({ selectedDay }: GoalsManagerProps) => {
         onGoalUpdate={handleGoalUpdate}
         editingGoal={editingGoal}
         onEditCancel={handleEditCancel}
+        userId={user.uid}
       />
     )
   };
